@@ -42,11 +42,14 @@ def userType(value, kwargs):
 
 
 def minimumPrice(minPrice, kwargs):
-    minimum_price = float(minPrice)
-    price = float(kwargs['price'])
+    try:
+        minimum_price = float(minPrice)
+        price = float(kwargs['price'])
 
-    if price > minimum_price:
-        return True
+        if price > minimum_price:
+            return True
+    except ValueError:
+        print('invalid value for minimum price')
     return False
 
 condition_functions = {"userType": userType, "minimumPrice": minimumPrice}
