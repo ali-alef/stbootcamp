@@ -112,7 +112,7 @@ var cfg Config
 
 // Serve serves a load balancer.
 func main() {
-	data, err := ioutil.ReadFile("loadBalancer/config/config.json")
+	data, err := ioutil.ReadFile("config/config.json")
 	if err != nil {
 		log.Fatal("error while opening config file ", err.Error())
 	}
