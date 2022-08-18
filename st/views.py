@@ -8,5 +8,3 @@ def apply(request):
     appliedRules = []
 
     checkRules(userType, price, appliedRules)
-
-

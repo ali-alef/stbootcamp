@@ -16,7 +16,7 @@ def applyAction(rule, price):
     return displacement, newPrice
 
 
-def checkRules(userType, price, appliedRules):
+def checkRules(price, appliedRules, userType):
     sequence = 1
 
     for rule in Rule.objects.all():
