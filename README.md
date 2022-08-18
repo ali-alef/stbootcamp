@@ -27,7 +27,7 @@ server nodes can run by "python manage.py runserver {8001 or 8002}" command and 
 You can add rules, conditions and actions in "/admin" url.
 Conditions have 2 types (minimumPrice, you should give number for value) and (userType, you should give either `'B2B'` or `'B2C'`)
 ### adding new Conditions
-You can add new conditions by simply adding function to valuate the conditions by true or false and you should add the name of functions in condition_functions and conditionFunctions class.
+You can add new conditions by simply adding function to valuate the conditions by true or false and you should add the name of functions in condition_functions and condition_functions class.
 
 ## Models
 - **Rule**: should have name, type and action (foreign key), type defines the `MARKUP` or `DISCOUNT`
@@ -39,4 +39,7 @@ You can add new conditions by simply adding function to valuate the conditions b
 **password**: Passw0rd$96
 
 (or you can create a new superuser by `python manage.py createsuperuser`)\
-we also found mistakes from your documents :))))) (MIN and MAX mistake)
+\
+\
+\
+**we also found mistakes from your documents :))))) (MIN and MAX mistake)** ⚠️
