@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .fuctions import checkRules
-
+import json
 
 @csrf_exempt
 def apply(request):
