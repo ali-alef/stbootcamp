@@ -9,6 +9,13 @@ def apply(request):
         body = request.body.decode('utf-8')
         data = json.loads(body)
         price = data['price']
+        
+        
+        if not isinstance(price, float) or price < 0:
+            print('invalid value for price')
+            return JsonResponse({"applied": False,
+                                 "appliedRules": []})
+        
         appliedRules = []
         checkRules(price, appliedRules, data)
         applied = bool(len(appliedRules))
