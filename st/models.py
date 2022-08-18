@@ -15,7 +15,6 @@ class Rule(models.Model):
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=20, choices=RuleType.choices)
     action = models.OneToOneField(Action, on_delete=models.CASCADE)
-    listConditions = []
 
     def __str__(self):
         return self.name
@@ -31,7 +30,7 @@ class Condition(models.Model):
     value = models.CharField(max_length=200, null=True)
 
     def check_condition(self, kwargs):
-        func = funcNameDict[self.type]
+        func = condition_functions[self.type]
         return func(self.value, kwargs)
 
 
