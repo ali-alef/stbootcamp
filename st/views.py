@@ -6,9 +6,12 @@ from .fuctions import checkRules
 @csrf_exempt
 def apply(request):
     if request.method == 'POST':
-        price = float(request.POST['price'])
+        body = request.body.decode('utf-8')
+        data = json.loads(body)
+        price = data['price']
+        
         appliedRules = []
-        checkRules(price, appliedRules, request.POST.dict())
+        checkRules(price, appliedRules, data)
 
         return JsonResponse({"appliedRules": appliedRules})
 
