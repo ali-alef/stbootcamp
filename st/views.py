@@ -9,9 +9,9 @@ def apply(request):
         body = request.body.decode('utf-8')
         data = json.loads(body)
         price = data['price']
-        
         appliedRules = []
         checkRules(price, appliedRules, data)
-
-        return JsonResponse({"appliedRules": appliedRules})
+        applied = bool(len(appliedRules))
+        return JsonResponse({"applied": applied,
+                             "appliedRules": appliedRules})
 
