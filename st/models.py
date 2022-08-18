@@ -22,6 +22,7 @@ class Rule(models.Model):
 
 
 class Condition(models.Model):
+    # you have to add your condition functions name here
     class ConditionFunctions(models.TextChoices):
         userType = "userType"
         minimumPrice = "minimumPrice"
@@ -35,6 +36,7 @@ class Condition(models.Model):
         return func(self.value, kwargs)
 
 
+# condition functions (add your condition functions here)
 def userType(value, kwargs):
     user_type = kwargs['userType']
     if user_type == value:
@@ -53,4 +55,6 @@ def minimumPrice(minPrice, kwargs):
         print('invalid value for minimum price')
     return False
 
+
+# you have to add your condition functions name here
 condition_functions = {"userType": userType, "minimumPrice": minimumPrice}
