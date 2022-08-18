@@ -17,6 +17,9 @@ class Rule(models.Model):
     type = models.CharField(max_length=20, choices=ruleType.choices)
     action = models.OneToOneField(Action, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class userType(models.TextChoices):
     B2B = 'B2B'

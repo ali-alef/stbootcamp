@@ -16,11 +16,11 @@ def applyAction(rule, price):
     return displacement, newPrice
 
 
-def checkRules(price, appliedRules, userType):
+def checkRules(price, appliedRules, user_type):
     sequence = 1
 
     for rule in Rule.objects.all():
-        if ruleCondition(rule, userType):
+        if ruleCondition(rule, user_type):
             displacement, newPrice = applyAction(rule, price)
             dict = {
                 "rule": rule,
@@ -35,5 +35,9 @@ def checkRules(price, appliedRules, userType):
             appliedRules.append(dict)
 
 
-def ruleCondition(rule, userType):
-    pass
+def ruleCondition(rule, user_Type):
+    condition = Condition.objects.get(rule=rule)
+    if user_Type == condition.userTypeCondition:
+        return True
+
+    return False
