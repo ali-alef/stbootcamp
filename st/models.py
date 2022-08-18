@@ -1,21 +1,30 @@
 from django.db import models
 
 
-def B2B(kwargs):
-    userType = kwargs['userType']
-    if userType == "B2B":
+def userType(value, kwargs):
+    user_type = kwargs['userType']
+    if user_type == value:
         return True
+
     return False
 
 
-def B2C(kwargs):
-    userType = kwargs['userType']
-    if userType == "B2C":
+def minimumPrice(minPrice, kwargs):
+    minimum_price = int(minPrice)
+    price = int(kwargs['price'])
+
+    if price > minimum_price:
         return True
+
     return False
 
 
-funcNameDict = {"B2B": B2B, "B2C": B2C}
+funcNameDict = {"userType": userType, "minimumPrice": minimumPrice}
+
+
+class funcName(models.TextChoices):
+    userType = "userType"
+    minimumPrice = "minimumPrice"
 
 
 class Action(models.Model):
@@ -39,15 +48,11 @@ class Rule(models.Model):
         return self.name
 
 
-class funcName(models.TextChoices):
-    B2B = 'B2B'
-    B2C = 'B2C'
-
-
 class Condition(models.Model):
     rule = models.ForeignKey(Rule, on_delete=models.CASCADE, null=True)
-    func_name = models.CharField(max_length=25, choices=funcName.choices)
+    type = models.CharField(max_length=200, choices=funcName.choices)
+    value = models.CharField(max_length=200, null=True)
 
     def check_condition(self, kwargs):
-        func = funcNameDict[self.func_name]
-        return func(kwargs)
+        func = funcNameDict[self.type]
+        return func(self.value, kwargs)

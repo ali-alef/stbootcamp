@@ -36,6 +36,8 @@ def checkRules(price, appliedRules, kwargs):
 
             appliedRules.append(dict)
 
+            price = newPrice
+
 
 def ruleCondition(rule, kwargs):
     for condition in rule.condition_set.all():
