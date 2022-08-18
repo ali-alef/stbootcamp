@@ -11,6 +11,7 @@ def apply(request):
         price = data['price']
         
         
+        # checking for invalid inputs
         if not isinstance(price, float) or price < 0:
             print('invalid value for price')
             return JsonResponse({"applied": False,
