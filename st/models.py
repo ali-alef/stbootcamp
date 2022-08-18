@@ -1,46 +1,19 @@
 from django.db import models
 
 
-def userType(value, kwargs):
-    user_type = kwargs['userType']
-    if user_type == value:
-        return True
-
-    return False
-
-
-def minimumPrice(minPrice, kwargs):
-    minimum_price = int(minPrice)
-    price = int(kwargs['price'])
-
-    if price > minimum_price:
-        return True
-
-    return False
-
-
-funcNameDict = {"userType": userType, "minimumPrice": minimumPrice}
-
-
-class funcName(models.TextChoices):
-    userType = "userType"
-    minimumPrice = "minimumPrice"
-
-
 class Action(models.Model):
-    fixedDisplacementAmount = models.DecimalField(max_digits=20, decimal_places=2)
-    percentageDisplacementAmount = models.DecimalField(max_digits=10, decimal_places=2)
-    maximumDisplacementAmount = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-class ruleType(models.TextChoices):
-    MARKUP = 'MARKUP'
-    DISCOUNT = 'DISCOUNT'
+    fixedDisplacementAmount = models.DecimalField(max_digits=20, decimal_places=2, validators=[MinValueValidator(0)])
+    percentageDisplacementAmount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    maximumDisplacementAmount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
 
 
 class Rule(models.Model):
+    class RuleType(models.TextChoices):
+        MARKUP = 'MARKUP'
+        DISCOUNT = 'DISCOUNT'
+
     name = models.CharField(max_length=200)
-    type = models.CharField(max_length=20, choices=ruleType.choices)
+    type = models.CharField(max_length=20, choices=RuleType.choices)
     action = models.OneToOneField(Action, on_delete=models.CASCADE)
     listConditions = []
 
@@ -49,10 +22,32 @@ class Rule(models.Model):
 
 
 class Condition(models.Model):
+    class ConditionFunctions(models.TextChoices):
+        userType = "userType"
+        minimumPrice = "minimumPrice"
+
     rule = models.ForeignKey(Rule, on_delete=models.CASCADE, null=True)
-    type = models.CharField(max_length=200, choices=funcName.choices)
+    type = models.CharField(max_length=200, choices=ConditionFunctions.choices)
     value = models.CharField(max_length=200, null=True)
 
     def check_condition(self, kwargs):
         func = funcNameDict[self.type]
         return func(self.value, kwargs)
+
+
+def userType(value, kwargs):
+    user_type = kwargs['userType']
+    if user_type == value:
+        return True
+    return False
+
+
+def minimumPrice(minPrice, kwargs):
+    minimum_price = float(minPrice)
+    price = float(kwargs['price'])
+
+    if price > minimum_price:
+        return True
+    return False
+
+condition_functions = {"userType": userType, "minimumPrice": minimumPrice}
