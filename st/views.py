@@ -1,14 +1,14 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from .fuctions import checkRules
 
 
+@csrf_exempt
 def apply(request):
     if request.method == 'POST':
-        userType = request.POST['userType']
-        price = request.POST['price']
+        price = float(request.POST['price'])
         appliedRules = []
-
-        checkRules(price, appliedRules, userType)
+        checkRules(price, appliedRules, request.POST.dict())
 
         return JsonResponse({"appliedRules": appliedRules})
+

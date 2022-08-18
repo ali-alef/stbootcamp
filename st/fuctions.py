@@ -1,11 +1,12 @@
 from .models import *
 
 
+# applies the discount or markup
+# returns amount of displacement and new price
 def applyAction(rule, price):
-    f = rule.action.fixedDisplacementAmount
-    p = rule.action.percentageDisplacementAmount
-    m = rule.action.maximumDisplacementAmount
-
+    f = float(rule.action.fixedDisplacementAmount)
+    p = float(rule.action.percentageDisplacementAmount)
+    m = float(rule.action.maximumDisplacementAmount)
     if rule.type == "MARKUP":
         displacement = min(f + (price * p) / 100, m)
         newPrice = price + displacement
@@ -16,14 +17,15 @@ def applyAction(rule, price):
     return displacement, newPrice
 
 
-def checkRules(price, appliedRules, user_type):
+def checkRules(price, appliedRules, kwargs):
     sequence = 1
 
     for rule in Rule.objects.all():
-        if ruleCondition(rule, user_type):
+        if ruleCondition(rule, kwargs):
             displacement, newPrice = applyAction(rule, price)
             dict = {
-                "rule": rule,
+                "id": rule.id,
+                "name": rule.name,
                 "oldPrice": price,
                 "newPrice": newPrice,
                 "displacement": displacement,
@@ -35,9 +37,9 @@ def checkRules(price, appliedRules, user_type):
             appliedRules.append(dict)
 
 
-def ruleCondition(rule, user_Type):
-    condition = Condition.objects.get(rule=rule)
-    if user_Type == condition.userTypeCondition:
-        return True
+def ruleCondition(rule, kwargs):
+    for condition in rule.condition_set.all():
+        if not condition.check_condition(kwargs):
+            return False
 
-    return False
+    return True
