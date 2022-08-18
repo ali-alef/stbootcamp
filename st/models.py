@@ -9,6 +9,7 @@ class Action(models.Model):
 
 
 class Rule(models.Model):
+    
     class RuleType(models.TextChoices):
         MARKUP = 'MARKUP'
         DISCOUNT = 'DISCOUNT'
@@ -22,6 +23,7 @@ class Rule(models.Model):
 
 
 class Condition(models.Model):
+    
     # you have to add your condition functions name here
     class ConditionFunctions(models.TextChoices):
         userType = "userType"
@@ -36,7 +38,8 @@ class Condition(models.Model):
         return func(self.value, kwargs)
 
 
-# condition functions (add your condition functions here)
+# condition functions (write your condition functions here)
+# -------------------------------------------------------
 def userType(value, kwargs):
     user_type = kwargs['userType']
     if user_type == value:
