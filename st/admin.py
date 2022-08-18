@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(Rule)
 admin.site.register(Action)
+admin.site.register(Condition)

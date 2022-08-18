@@ -7,18 +7,22 @@ class Action(models.Model):
     maximumDisplacementAmount = models.DecimalField(max_digits=10, decimal_places=2)
 
 
+class ruleType(models.TextChoices):
+    MARKUP = 'MARKUP'
+    DISCOUNT = 'DISCOUNT'
+
+
 class Rule(models.Model):
-    ruleChoices = [
-        ('1', "DISCOUNT"),
-        ('2', "MARKUP"),
-    ]
-
-    userTypeConditions = [
-        ('1', "B2B"),
-        ('2', "B2C"),
-    ]
-
     name = models.CharField(max_length=200)
-    type = models.CharField(max_length=1, choices=ruleChoices)
-    userTypeCondition = models.CharField(max_length=1, choices=userTypeConditions)
+    type = models.CharField(max_length=20, choices=ruleType.choices)
     action = models.OneToOneField(Action, on_delete=models.CASCADE)
+
+
+class userType(models.TextChoices):
+    B2B = 'B2B'
+    B2C = 'B2C'
+
+
+class Condition(models.Model):
+    rule = models.OneToOneField(Rule, on_delete=models.CASCADE)
+    userTypeCondition = models.CharField(max_length=20, choices=userType.choices)
