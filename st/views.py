@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import *
 
 
 def apply(request):
@@ -7,6 +8,9 @@ def apply(request):
     price = request.POST['price']
 
 
+def applyAction(rule, price):
+    f = rule.action.fixedDisplacementAmount
+    p = rule.action.percentageDisplacementAmount
+    m = rule.action.maximumDisplacementAmount
 
-def handleRequest():
-    pass
+    if rule.type
