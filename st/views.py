@@ -3,4 +3,10 @@ from django.shortcuts import render
 
 
 def apply(request):
-    return HttpResponse("hello")
+    userType = request.POST['userType']
+    price = request.POST['price']
+
+
+
+def handleRequest():
+
