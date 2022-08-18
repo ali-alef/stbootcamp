@@ -3,7 +3,7 @@ from .models import *
 
 
 class RuleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type')
+    list_display = ('id', 'name', 'type')
 
 class ConditionAdmin(admin.ModelAdmin):
     list_display = ('id', 'rule', 'type', 'value')
